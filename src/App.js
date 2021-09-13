@@ -1,23 +1,57 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState, useEffect } from "react";
+import "./App.css";
+// axios
+import axios from "axios";
+// components
+import Region from "./components/Region";
+import Countries from "./components/Countries";
 
 function App() {
+  const [countries, setCountries] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [region, setRegion] = useState("all");
+
+  // API url
+  let apiUrl;
+
+  useEffect(() => {
+    const getCountries = async () => {
+      if (region === "all") {
+        apiUrl = "https://restcountries.eu/rest/v2/all";
+      } else {
+        apiUrl = `https://restcountries.eu/rest/v2/region/${region}`;
+      }
+
+      setIsLoading(true);
+
+      try {
+        const response = await axios.get(apiUrl);
+        setCountries(response.data);
+      } catch (error) {
+        console.log(error);
+      }
+
+      setIsLoading(false);
+    };
+
+    getCountries();
+  }, [region]);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
+    <div className="container">
+      <h1 className="header">
+        <a href="https://restcountries.eu/" target="_blank">
+          Countries API
         </a>
-      </header>
+      </h1>
+      {/* region radio  */}
+      <Region region={region} setRegion={setRegion} />
+      {/* countries or loading  */}
+      {isLoading ? (
+        <div className="loading-circle"></div>
+      ) : (
+        <Countries countries={countries} />
+      )}
     </div>
   );
 }
