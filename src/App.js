@@ -17,9 +17,9 @@ function App() {
   useEffect(() => {
     const getCountries = async () => {
       if (region === "all") {
-        apiUrl = "https://restcountries.eu/rest/v2/all";
+        apiUrl = "https://restcountries.com/v2/all";
       } else {
-        apiUrl = `https://restcountries.eu/rest/v2/region/${region}`;
+        apiUrl = `https://restcountries.com/v2/continent/${region}`;
       }
 
       setIsLoading(true);
@@ -40,7 +40,7 @@ function App() {
   return (
     <div className="container">
       <h1 className="header">
-        <a href="https://restcountries.eu/" target="_blank">
+        <a href="https://restcountries.com/" target="_blank">
           Countries API
         </a>
       </h1>
